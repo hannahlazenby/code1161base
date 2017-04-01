@@ -67,6 +67,7 @@ def stubborn_asker(low, high):
         print(answer)
     return answer
 
+
 def not_number_rejector(message):
     """Ask for a number repeatedly until actually given one.
 
@@ -75,12 +76,14 @@ def not_number_rejector(message):
     When you do get a number, return it.
     """
     while True:
+        answer = (raw_input(message))
         try:
-            answer = int(raw_input("pick a number"))
+            answer = int(answer)
             print(answer)
             return answer
         except:
-            print("not a number")
+            print(answer)
+            print("That is not a number, try again")
 
 
 def super_asker(low, high):
@@ -89,18 +92,19 @@ def super_asker(low, high):
     Combine stubborn_asker and not_number_rejector to make a function
     that does it all!
     """
-    question = "pick a number between {low}&{high}".format(low=low, high=high)
+    question = "pick a number between {low} & {high} \n".format(low=low,
+                                                                high=high)
     while True:
+        answer = raw_input(question)
+        print(answer)
         try:
-            answer = raw_input(question)
-            print(answer)
             answer = int(answer)
             while low > answer or answer > high:
                 answer = raw_input(question)
-                print(answer)
+                print("in while loop")
             return answer
         except:
-            print("not a number")
+            print("That is not a number, try again")
 
 
 if __name__ == "__main__":
