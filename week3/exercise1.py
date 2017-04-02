@@ -101,7 +101,6 @@ def super_asker(low, high):
             answer = int(answer)
             while low > answer or answer > high:
                 answer = raw_input(question)
-                print("in while loop")
             return answer
         except:
             print("That is not a number, try again")
