@@ -33,15 +33,21 @@ def advancedGuessingGame():
     lower_bound = not_number_rejector("Enter a number: ")
     lower_bound = int(lower_bound)
     greater = False
-    print("Now pick another number which is greater than one plus "
-          "the first number ")
+    print("Now pick another number which is greater than {}  "
+          "plus 1".format(lower_bound))
     while not greater:
         upper_bound = not_number_rejector("Enter number : ")
 
         if upper_bound > lower_bound + 1:
             greater = True
+        elif upper_bound == lower_bound + 1:
+            print("The number must be greater "
+                  "than {} + 1 ".format(lower_bound))
+        elif upper_bound == lower_bound:
+            print("The number can't equal {}, try again".format(lower_bound))
         else:
-            print("That number is not greater than the first, try again ")
+            print("That number is not greater "
+                  "than {}, try again ".format(lower_bound))
     upper_bound = int(upper_bound)
     guessed = False
 
@@ -59,6 +65,7 @@ def advancedGuessingGame():
             print("Too low, try again")
         else:
             print("Too high, try again")
+    return "you got it"
 
 
 if __name__ == "__main__":
