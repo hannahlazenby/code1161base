@@ -92,10 +92,11 @@ def super_asker(low, high):
     Combine stubborn_asker and not_number_rejector to make a function
     that does it all!
     """
-    question = "pick a number between {low} & {high} \n".format(low=low,
-                                                                high=high)
+    question = "pick a number between {low} & {high} ".format(low=low,
+                                                              high=high)
     while True:
         answer = raw_input(question)
+        print(question)
         print(answer)
         try:
             answer = int(answer)
