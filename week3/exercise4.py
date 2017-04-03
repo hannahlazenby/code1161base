@@ -2,7 +2,7 @@
 """Week 3, Exercise 4."""
 from __future__ import division
 from __future__ import print_function
-import math
+# import math
 # import time
 
 
@@ -32,20 +32,21 @@ def binary_search(low, high, actual_number):
     last = int(high)
 
     found = False
-    count = 1
+    tries = 0
 
     while not found:
             guess = (first + last)//2
-            print("guess: {}".format(guess))
+            print({"guess": guess})
             if guess == actual_number:
                 found = True
-            elif guess < actual_number:
-                last = guess - 1
-                count = count + 1
+                print("got it!")
+            elif guess > actual_number:
+                last = guess
+                tries = tries + 1
             else:
-                first = guess + 1
-                count = count + 1
-    print("tries: {}".format(count))
+                first = guess
+                tries = tries + 1
+    return {"guess": guess, "tries": tries}
 
 
 if __name__ == "__main__":
