@@ -65,7 +65,7 @@ def advancedGuessingGame():
             print("Too low, try again")
         else:
             print("Too high, try again")
-    return "you got it"
+    return "You got it!"
 
 
 if __name__ == "__main__":
