@@ -28,7 +28,12 @@ def success_is_relative():
     # this depends on excecution context. Take a look at your CWD and remember
     # that it changes.
     # print(path, CWD)
-    pass
+    mode = "r"
+    file_path = "week1/pySuccessMessage.json"
+    file_open = open(file_path, mode)
+    message = file_open.read()
+    message = message.strip()
+    return message
 
 
 def get_some_details():
@@ -50,9 +55,17 @@ def get_some_details():
     json_data = open(LOCAL + "/lazyduck.json").read()
 
     data = json.loads(json_data)
-    return {"lastName":       None,
-            "password":       None,
-            "postcodePlusID": None
+
+    lastName = data["results"][0]["name"]["last"]
+    password = data["results"][0]["login"]["password"]
+    postcode = data["results"][0]["location"]["postcode"]
+    ID = data["results"][0]["id"]["value"]
+
+    postcodePlusID = int(postcode) + int(ID)
+
+    return {"lastName":       lastName,
+            "password":       password,
+            "postcodePlusID": postcodePlusID
             }
 
 
@@ -88,7 +101,25 @@ def wordy_pyramid():
     ]
     TIP: to add an argument to a URL, use: ?argName=argVal e.g. ?len=
     """
-    pass
+    word_pyramid = []
+    for length in range(3, 20, 2):
+        URL = "http://www.setgetgo.com/randomword/get.php?len=" + str(length)
+        r = requests.get(URL)
+        word = r.text
+        word = word.strip()
+        word_pyramid.append(word)
+
+    for length in range(20, 3, -2):
+        URL = "http://www.setgetgo.com/randomword/get.php?len=" + str(length)
+        r = requests.get(URL)
+        word = r.text
+        word = word.strip()
+        word_pyramid.append(word)
+
+    print(word_pyramid)
+    print([len(w) for w in word_pyramid])
+
+    return word_pyramid
 
 
 def wunderground():
