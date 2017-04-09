@@ -116,8 +116,8 @@ def wordy_pyramid():
         word = word.strip()
         word_pyramid.append(word)
 
-    print(word_pyramid)
-    print([len(w) for w in word_pyramid])
+    # print(word_pyramid)
+    # print([len(w) for w in word_pyramid])
 
     return word_pyramid
 
@@ -134,7 +134,7 @@ def wunderground():
          variable and then future access will be easier.
     """
     base = "http://api.wunderground.com/api/"
-    api_key = "YOUR KEY - REGISTER TO GET ONE"
+    api_key = "2e6f639d8bec584c"
     country = "AU"
     city = "Sydney"
     template = "{base}/{key}/conditions/q/{country}/{city}.json"
@@ -142,11 +142,18 @@ def wunderground():
     r = requests.get(url)
     the_json = json.loads(r.text)
     obs = the_json['current_observation']
+    print(obs)
+    # print(url)
 
-    return {"state":           None,
-            "latitude":        None,
-            "longitude":       None,
-            "local_tz_offset": None}
+    state = obs['display_location']['state']
+    latitude = obs['display_location']['latitude']
+    longitude = obs['display_location']['longitude']
+    local_tz_offset = obs['estimated']['local_tz_offset']
+
+    return {"state":           state,
+            "latitude":        latitude,
+            "longitude":       longitude,
+            "local_tz_offset": local_tz_offset}
 
 
 def diarist():
@@ -162,7 +169,29 @@ def diarist():
     TIP: remember to commit 'lasers.pew' and push it to your repo, otherwise
          the test will have nothing to look at.
     """
-    pass
+
+    mode = "r"
+    file_path = "week4/Trispokedovetiles(laser).gcode"
+    file_open = open(file_path, mode)
+    content = file_open.readlines()
+    content = content.strip()
+
+    print(content)
+
+    count = 0
+
+    for line in content:
+        if 'M10 P1' in line:
+            count = count + 1
+    count = str(count)
+
+    mode2 = "w"  # from the docs
+    file_path_2 = "week4/lasers.pew"
+    lasers_doc = open(file_path_2, mode2)
+    lasers_doc.write(count)
+    lasers_doc.close()
+
+    return count
 
 
 if __name__ == "__main__":
