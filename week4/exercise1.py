@@ -142,13 +142,13 @@ def wunderground():
     r = requests.get(url)
     the_json = json.loads(r.text)
     obs = the_json['current_observation']
-    print(obs)
-    # print(url)
+    # print(obs['display_location']['state'])
 
     state = obs['display_location']['state']
     latitude = obs['display_location']['latitude']
     longitude = obs['display_location']['longitude']
-    local_tz_offset = obs['estimated']['local_tz_offset']
+    local_tz_offset = obs['local_tz_offset']
+    print(state + latitude + longitude + local_tz_offset)
 
     return {"state":           state,
             "latitude":        latitude,
@@ -174,9 +174,6 @@ def diarist():
     file_path = "week4/Trispokedovetiles(laser).gcode"
     file_open = open(file_path, mode)
     content = file_open.readlines()
-    content = content.strip()
-
-    print(content)
 
     count = 0
 
@@ -185,7 +182,7 @@ def diarist():
             count = count + 1
     count = str(count)
 
-    mode2 = "w"  # from the docs
+    mode2 = "w+"  # from the docs
     file_path_2 = "week4/lasers.pew"
     lasers_doc = open(file_path_2, mode2)
     lasers_doc.write(count)
