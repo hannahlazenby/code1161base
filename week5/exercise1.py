@@ -142,6 +142,7 @@ def get_triangle_facts(base, height, units="mm"):
 # but with the values and shape that relate to the specific
 # triangle we care about.
 def tell_me_about_this_right_triangle(facts_dictionary):
+    """Properties of a triangle."""
     tall = """
             {height}
             |
@@ -171,26 +172,37 @@ def tell_me_about_this_right_triangle(facts_dictionary):
                "This is a {aspect} triangle.\n")
 
     facts = pattern.format(**facts_dictionary)
-
-    if {aspect} == "tall":
-
+    aspect = facts_dictionary["aspect"]
+    if aspect == "tall":
+        diagram = tall.format(**facts_dictionary)
+    elif aspect == "wide":
+        diagram = wide.format(**facts_dictionary)
+    elif aspect == "equal":
+        diagram = equal.format(**facts_dictionary)
+    return diagram
+    return facts
 
 
 def triangle_master(base,
                     height,
                     return_diagram=False,
                     return_dictionary=False):
+    """Triangle Master."""
+    triangle_facts = get_triangle_facts(base, height)
+    triangle_diagram = tell_me_about_this_right_triangle(triangle_facts)
     if return_diagram and return_dictionary:
-        return tell_me_about_this_right_triangle
+        return triangle_facts
+        return triangle_diagram
     elif return_diagram:
-        return None
+        return triangle_diagram
     elif return_dictionary:
-        return None
+        return triangle_facts
     else:
         print("You're an odd one, you don't want anything!")
 
 
 def wordy_pyramid():
+    """Create a word pyramid."""
     import requests
     baseURL = "http://www.setgetgo.com/randomword/get.php?len="
     pyramid_list = []
@@ -208,11 +220,21 @@ def wordy_pyramid():
 
 
 def get_a_word_of_length_n(length):
-    pass
+    """Get random word with specific length."""
+    import requests
+    baseURL = "http://www.setgetgo.com/randomword/get.php?len="
+    url = baseURL + str(length)
+    r = requests.get(url)
+    message = r.text
+    return message
 
 
 def list_of_words_with_lengths(list_of_lengths):
-    pass
+    """Create a list of words with various lengths."""
+    pyramid_list = []
+    for x in list_of_lengths:
+        pyramid_list.append(get_a_word_of_length_n(x))
+    return pyramid_list
 
 
 if __name__ == "__main__":
