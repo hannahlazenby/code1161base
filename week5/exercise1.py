@@ -29,45 +29,18 @@ from __future__ import print_function
 import math
 
 
-# This is a terrible function. The rest of the functions in this file do a
-# much better job of what it's trying to do. Once you've has a little look,
-# move on, and eventually delete this function. (And this comment!)
-def do_bunch_of_bad_things():
-    """Do things in a bad way."""
-    print("Getting ready to start in 9")
-    print("Getting ready to start in 8")
-    print("Getting ready to start in 7")
-    print("Getting ready to start in 6")
-    print("Getting ready to start in 5")
-    print("Getting ready to start in 4")
-    print("Getting ready to start in 3")
-    print("Getting ready to start in 2")
-    print("Getting ready to start in 1")
-    print("Let's go!")
-
-    triangle = {"base": 3, "height": 4}
-    triangle["hypotenuse"] = triangle["base"]**2 + triangle["height"]**2
-    print("area = " + str((triangle["base"] * triangle["height"])/2))
-    print("side lengths are:")
-    print("base: {}".format(triangle["base"]))
-    print("height: {}".format(triangle["height"]))
-    print("hypotenuse: {}".format(triangle["hypotenuse"]))
-
-    another_hyp = 5**2 + 6**2
-    print(another_hyp)
-
-    yet_another_hyp = 40**2 + 30**2
-    print(yet_another_hyp)
-
-
 # return a lit of countdown messages, much like in the bad function above.
 # It should say something different in the last message.
 def countdown(message, start, stop, completion_message):
     """Return a list of countdown messages."""
     countdown_message = []
     start = int(start)
-    end = int(stop)
-    for i in range(start, end):
+    stop = int(stop)
+    if stop < start:
+        x = -1
+    else:
+        x = 1
+    for i in range(start, stop, x):
         countdown_message.append(message)
     countdown_message.append(completion_message)
     return countdown_message
@@ -142,7 +115,7 @@ def get_triangle_facts(base, height, units="mm"):
 # but with the values and shape that relate to the specific
 # triangle we care about.
 def tell_me_about_this_right_triangle(facts_dictionary):
-    """Properties of a triangle."""
+    """Propertie of a triangle."""
     tall = """
             {height}
             |
@@ -188,34 +161,27 @@ def triangle_master(base,
                     return_diagram=False,
                     return_dictionary=False):
     """Triangle Master."""
-    triangle_facts = get_triangle_facts(base, height)
-    triangle_diagram = tell_me_about_this_right_triangle(triangle_facts)
+    facts = get_triangle_facts(base, height)
+    diagram = tell_me_about_this_right_triangle(facts)
     if return_diagram and return_dictionary:
-        return triangle_facts
-        return triangle_diagram
+        return {"facts": facts, "diagram": diagram}
     elif return_diagram:
-        return triangle_diagram
+        return diagram
     elif return_dictionary:
-        return triangle_facts
+        return {"facts": facts}
     else:
         print("You're an odd one, you don't want anything!")
 
 
 def wordy_pyramid():
     """Create a word pyramid."""
-    import requests
-    baseURL = "http://www.setgetgo.com/randomword/get.php?len="
     pyramid_list = []
+    list_of_lengths = []
     for i in range(3, 21, 2):
-        url = baseURL + str(i)
-        r = requests.get(url)
-        message = r.text
-        pyramid_list.append(message)
+        list_of_lengths.append(int(i))
     for i in range(20, 3, -2):
-        url = baseURL + str(i)
-        r = requests.get(url)
-        message = r.text
-        pyramid_list.append(message)
+        list_of_lengths.append(int(i))
+    pyramid_list = list_of_words_with_lengths(list_of_lengths)
     return pyramid_list
 
 
@@ -223,10 +189,15 @@ def get_a_word_of_length_n(length):
     """Get random word with specific length."""
     import requests
     baseURL = "http://www.setgetgo.com/randomword/get.php?len="
-    url = baseURL + str(length)
-    r = requests.get(url)
-    message = r.text
-    return message
+    try:
+        if length >= 3:
+            if type(length) is int:
+                url = baseURL + str(length)
+                r = requests.get(url)
+                message = r.text
+                return message
+    except:
+        None
 
 
 def list_of_words_with_lengths(list_of_lengths):
@@ -235,7 +206,3 @@ def list_of_words_with_lengths(list_of_lengths):
     for x in list_of_lengths:
         pyramid_list.append(get_a_word_of_length_n(x))
     return pyramid_list
-
-
-if __name__ == "__main__":
-    do_bunch_of_bad_things()
