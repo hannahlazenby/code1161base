@@ -104,14 +104,15 @@ def abba(source="abba", guard=3):
             return "oa"
         else:
             return letter
-    g = 1
-    new_string = ""
-    while g <= guard:
-        for x in source:
-            new_string += apply_rules(x)
-        g = g + 1
-        # write the rest of the function her
-    return new_string
+
+    letters_in = list(source)
+    letters_out = map(apply_rules, letters_in)
+    new_string = "".join(letters_out)
+    guard -= 1
+    if guard > 0:
+        return abba(new_string, guard)
+    else:
+        return new_string
 
 
 def koch(t, order, size):
