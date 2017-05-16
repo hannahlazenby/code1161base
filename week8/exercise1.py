@@ -9,7 +9,6 @@ You've got an hour.
 """
 from __future__ import division
 from __future__ import print_function
-import time
 
 
 def greet(name="Towering Timmy"):
@@ -18,7 +17,7 @@ def greet(name="Towering Timmy"):
     return a string of "Hello" and the name argument.
     E.g. if given as "Towering Timmy" it should return "Hello Towering Timmy"
     """
-    pass
+    return "Hello " + name
 
 
 def three_counter(input_list=[1, 4, 3, 5, 7, 1, 3, 2, 3, 3, 5, 3, 7]):
@@ -27,7 +26,13 @@ def three_counter(input_list=[1, 4, 3, 5, 7, 1, 3, 2, 3, 3, 5, 3, 7]):
     Return an integer.
     TIP: the test will use a different input_list, so don't just return 5
     """
-    pass
+    count = 0
+    for x in input_list:
+        if x == 3:
+            count = count + 1
+        else:
+            count = count
+    return count
 
 
 def fizz_buzz():
@@ -45,7 +50,15 @@ def fizz_buzz():
     if it is. E.g. [1, 2, "Fizz", 4, "Buzz", 6, 7, ...]
     """
     fizzBuzzList = []
-    # your code here
+    for x in range(1, 101, 1):
+        if x % 3 == 0 and x % 5 == 0:
+            fizzBuzzList.append("FizzBuzz")
+        elif x % 3 == 0:
+            fizzBuzzList.append("Fizz")
+        elif x % 5 == 0:
+            fizzBuzzList.append("Buzz")
+        else:
+            fizzBuzzList.append(x)
     return fizzBuzzList
 
 
@@ -56,7 +69,12 @@ def put_behind_bars(input_string="very naughty boy"):
     e.g. "very naughty boy" should return "|v|e|r|y| |n|a|u|g|h|t|y| |b|o|y|"
     TIP: make sure that you have a pipe on both ends of the string.
     """
-    pass
+    new_string = ""
+    for x in input_string:
+        new_string = new_string + "|" + x
+
+    new_string = new_string + "|"
+    return new_string
 
 
 def pet_filter(letter="a"):
@@ -69,7 +87,13 @@ def pet_filter(letter="a"):
             "bali cattle", "gayal", "turkey", "goldfish", "rabbit", "koi",
             "canary", "society finch", "fancy mouse", "siamese fighting fish",
             "fancy rat and lab rat", "mink", "red fox", "hedgehog", "guppy"]
-    pass
+
+    pets_return = []
+
+    for pet in pets:
+        if letter in pet:
+            pets_return.append(pet)
+    return pets_return
 
 
 def best_letter_for_pets():
@@ -80,7 +104,17 @@ def best_letter_for_pets():
     """
     import string
     the_alphabet = string.lowercase
-    pass
+
+    common_letter = ""
+    max_num_pets = 0
+
+    for x in the_alphabet:
+        pets = pet_filter(x)
+        num_pets = len(pets)
+        if max_num_pets < num_pets:
+            max_num_pets = num_pets
+            common_letter = x
+    return common_letter
 
 
 def make_filler_text_dictionary():
@@ -98,7 +132,22 @@ def make_filler_text_dictionary():
     TIP: you'll need the requests library
     """
     import requests
-    pass
+    dict_words = {}
+
+    for leng in range(3, 8, 1):
+        i = 0
+        word_list = []
+        while i < 3:
+            URL = "http://www.setgetgo.com/randomword/get.php?len=" + str(leng)
+            r = requests.get(URL)
+            word = r.text
+            word = word.strip()
+            word_list.append(word)
+            i = i + 1
+
+        dict_words.update({leng: word_list})
+
+    return dict_words
 
 
 def random_filler_text(number_of_words=200):
@@ -114,7 +163,18 @@ def random_filler_text(number_of_words=200):
            capital letter and end with a full stop.
     """
     import random
-    pass
+    words_list = make_filler_text_dictionary()
+    random_para = []
+    n = 0
+    while n < number_of_words:
+        random_word_key = random.choice(words_list.keys())
+        random_word = random.choice(words_list[random_word_key])
+        random_para.append(random_word)
+        n = n + 1
+
+    random_para = " ".join(random_para)
+
+    return random_para
 
 
 def fast_filler(number_of_words=200):
@@ -129,18 +189,49 @@ def fast_filler(number_of_words=200):
     into and out of the file. Be careful when you read it back in, it'll
     convert integer keys to strings.
     """
-    pass
+    import os
+    import random
+    import json
+
+    file_path = "week8/dict_racey.words"
+
+    if os.path.isfile(file_path):
+        words_file = open(file_path, "r")
+        words_list = json.load(words_file)
+        print(words_list)
+        words_file.close()
+    else:
+        words_list = make_filler_text_dictionary()
+        dumped = json.dumps(words_list)
+        words_file = open(file_path, "w")
+        words_file.write(dumped)
+        words_file.close()
+
+    random_para = []
+    n = 0
+    while n < number_of_words:
+        random_word_key = random.choice(words_list.keys())
+        random_word = random.choice(words_list[random_word_key])
+        if n == 0:
+            random_word = random_word.capitalize()
+        random_para.append(random_word)
+        n = n + 1
+
+    random_para = " ".join(random_para)
+    random_para = random_para + "."
+
+    return random_para
 
 
 if __name__ == '__main__':
-    print(greet())
-    print(three_counter())
-    print(fizz_buzz())
-    print(put_behind_bars())
-    print(pet_filter())
-    print(best_letter_for_pets())
-    print(make_filler_text_dictionary())
-    print(random_filler_text())
+    # print(greet())
+    # print(three_counter())
+    # print(fizz_buzz())
+    # print(put_behind_bars())
+    # print(pet_filter())
+    # print(best_letter_for_pets())
+    # print(make_filler_text_dictionary())
+    # print(random_filler_text())
     print(fast_filler())
     for i in range(10):
         print(i, fast_filler())
